@@ -1,4 +1,4 @@
-import type { Meeting } from "../data/mockData";
+import type { Meeting } from "../app/data/mockData";
 
 export function formatMeetingExport(meeting: Meeting) {
   return `Meeting: ${meeting.title}
@@ -12,11 +12,11 @@ ${meeting.decisions.join("\n")}
 
 Action Items:
 ${meeting.actionItems
-    .map(
-      (item) =>
-        `- ${item.task} (${item.assignedTo}, Due: ${item.deadline})`
-    )
-    .join("\n")}`;
+      .map(
+        (item) =>
+          `- ${item.task} (${item.assignedTo}, Due: ${item.deadline})`
+      )
+      .join("\n")}`;
 }
 
 export function formatTranscript(transcript: string) {

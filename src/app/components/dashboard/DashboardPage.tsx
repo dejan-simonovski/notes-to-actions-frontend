@@ -2,7 +2,7 @@ import { Link } from "react-router";
 import { Calendar, CheckCircle, Clock, Plus } from "lucide-react";
 
 import { useDashboard } from "../../hooks/useDashboard";
-import { formatDate } from "../../utils/dateUtils";
+import { formatDate } from "../../../utils/dateUtils";
 import { StatusBadge } from "../ui/StatusBadge";
 
 export function Dashboard() {

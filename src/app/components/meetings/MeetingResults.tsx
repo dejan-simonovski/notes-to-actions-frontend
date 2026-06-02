@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 
 import { useMeetingResults } from "../../hooks/useMeetingResults";
-import { formatTranscript } from "../../utils/meetingUtils";
+import { formatTranscript } from "../../../utils/meetingUtils";
 import { StatusBadge } from "../ui/StatusBadge";
 
 export function MeetingResults() {
