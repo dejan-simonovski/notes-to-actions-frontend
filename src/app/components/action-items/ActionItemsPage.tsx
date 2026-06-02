@@ -1,24 +1,23 @@
-import { Calendar, User } from "lucide-react";
+import { User } from "lucide-react";
 import { useActionItems } from "../../hooks/useActionItems";
+import type { TaskStatus } from "../../types/meeting";
 
-type Status = "To Do" | "In Progress" | "Done";
-
-const columns: { id: Status; title: string }[] = [
-  { id: "To Do", title: "To Do" },
-  { id: "In Progress", title: "In Progress" },
-  { id: "Done", title: "Done" },
+const columns: { id: TaskStatus; title: string }[] = [
+  { id: "to_do", title: "To Do" },
+  { id: "in_progress", title: "In Progress" },
+  { id: "done", title: "Done" },
 ];
 
-const columnColors: Record<Status, string> = {
-  "To Do": "border-gray-200",
-  "In Progress": "border-indigo-300",
-  "Done": "border-green-300",
+const columnColors: Record<TaskStatus, string> = {
+  to_do: "border-gray-200",
+  in_progress: "border-indigo-300",
+  done: "border-green-300",
 };
 
-const columnDragOver: Record<Status, string> = {
-  "To Do": "bg-gray-100 border-gray-400",
-  "In Progress": "bg-indigo-50 border-indigo-400",
-  "Done": "bg-green-50 border-green-400",
+const columnDragOver: Record<TaskStatus, string> = {
+  to_do: "bg-gray-100 border-gray-400",
+  in_progress: "bg-indigo-50 border-indigo-400",
+  done: "bg-green-50 border-green-400",
 };
 
 export function ActionItemsBoard() {
@@ -99,28 +98,18 @@ export function ActionItemsBoard() {
                         onDrop={(e) => handleDropOnItem(e, item.id, column.id)}
                         className={`bg-white p-3 sm:p-4 rounded-lg border shadow-sm cursor-grab active:cursor-grabbing transition-all duration-150 select-none
                           ${isItemOver
-                        ? "border-indigo-400 shadow-md -translate-y-0.5 scale-[1.01]"
-                        : "border-gray-200 hover:shadow-md"
-                      }`}
+                            ? "border-indigo-400 shadow-md -translate-y-0.5 scale-[1.01]"
+                            : "border-gray-200 hover:shadow-md"
+                          }`}
                       >
                         <h4 className="text-gray-900 mb-3 text-sm sm:text-base font-medium">
-                          {item.task}
+                          {item.description}
                         </h4>
 
                         <div className="space-y-1.5 text-gray-600 mb-3 text-xs sm:text-sm">
                           <div className="flex items-center gap-2">
                             <User size={14} className="text-gray-400 flex-shrink-0" />
-                            <span className="truncate">{item.assignedTo}</span>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Calendar size={14} className="text-gray-400 flex-shrink-0" />
-                            <span>
-                              {new Date(item.deadline).toLocaleDateString("en-US", {
-                                month: "short",
-                                day: "numeric",
-                                year: "numeric",
-                              })}
-                            </span>
+                            <span className="truncate">{item.assignee_name}</span>
                           </div>
                         </div>
 

@@ -4,6 +4,7 @@ import { updateActionItemStatus } from '../store/meetingsSlice';
 import type { TaskStatus } from '../types/meeting';
 
 export type FlatActionItem = {
+  id: string;
   meetingId: string;
   index: number;
   description: string;
@@ -13,14 +14,13 @@ export type FlatActionItem = {
   meetingTitle: string;
 };
 
-const uniqueId = (meetingId: string, index: number) => `${meetingId}-${index}`;
-
 export function useActionItems() {
   const dispatch = useAppDispatch();
   const meetings = useAppSelector((state) => state.meetings.meetings);
 
   const flatItems: FlatActionItem[] = meetings.flatMap((m) =>
     m.action_items.map((item, index) => ({
+      id: `${m.id}-${index}`,
       meetingId: m.id,
       index,
       description: item.description,
@@ -38,10 +38,7 @@ export function useActionItems() {
   const getItemsByStatus = (status: TaskStatus) =>
     flatItems.filter((item) => item.status === status);
 
-  const handleDragStart = (
-    e: DragEvent<HTMLDivElement>,
-    id: string,
-  ) => {
+  const handleDragStart = (e: DragEvent<HTMLDivElement>, id: string) => {
     draggingId.current = id;
     e.dataTransfer.effectAllowed = 'move';
     setTimeout(() => {
@@ -59,8 +56,9 @@ export function useActionItems() {
   };
 
   const dispatchStatusUpdate = (cardId: string, status: TaskStatus) => {
-    const [meetingId, rawIndex] = cardId.split('-');
-    const index = Number(rawIndex);
+    const lastDash = cardId.lastIndexOf('-');
+    const meetingId = cardId.substring(0, lastDash);
+    const index = Number(cardId.substring(lastDash + 1));
     dispatch(updateActionItemStatus({ meetingId, itemIndex: index, status }));
   };
 
@@ -94,6 +92,5 @@ export function useActionItems() {
     handleDragEnd,
     handleDropOnColumn,
     handleDropOnItem,
-    uniqueId,
   };
 }
