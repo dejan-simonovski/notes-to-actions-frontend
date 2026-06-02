@@ -34,7 +34,6 @@ export function ActionItemsBoard() {
   const handleDragStart = (e: React.DragEvent, id: string) => {
     draggingId.current = id;
     e.dataTransfer.effectAllowed = "move";
-    // Slight delay so the ghost image renders before we style the card
     setTimeout(() => {
       const el = document.getElementById(`card-${id}`);
       if (el) el.style.opacity = "0.4";
@@ -107,7 +106,6 @@ export function ActionItemsBoard() {
                   setDragOverCol(column.id);
                 }}
                 onDragLeave={(e) => {
-                  // Only clear if leaving the column entirely (not entering a child)
                   if (!e.currentTarget.contains(e.relatedTarget as Node)) {
                     setDragOverCol(null);
                   }
