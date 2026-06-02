@@ -39,12 +39,12 @@ export function MeetingResults() {
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case "Done":
-        return <CheckCircle className="text-green-600" size={18} />;
-      case "In Progress":
-        return <Clock className="text-amber-600" size={18} />;
-      default:
-        return <Circle className="text-gray-400" size={18} />;
+    case "Done":
+      return <CheckCircle className="text-green-600" size={18} />;
+    case "In Progress":
+      return <Clock className="text-amber-600" size={18} />;
+    default:
+      return <Circle className="text-gray-400" size={18} />;
     }
   };
 
@@ -212,12 +212,20 @@ export function MeetingResults() {
                       </div>
 
                       <span
+<<<<<<< HEAD
                         className={`px-2 py-1 rounded-full text-xs ${item.status === "Done"
+=======
+                        className={`px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs whitespace-nowrap ${item.status === "Done"
+>>>>>>> e9f1a57 (refactor: apply eslint to codebase)
                           ? "bg-green-100 text-green-700"
                           : item.status === "In Progress"
                             ? "bg-amber-100 text-amber-700"
                             : "bg-gray-100 text-gray-700"
+<<<<<<< HEAD
                           }`}
+=======
+                        }`}
+>>>>>>> e9f1a57 (refactor: apply eslint to codebase)
                       >
                         {item.status}
                       </span>

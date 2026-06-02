@@ -4,7 +4,7 @@ import { MacbookScrollDemo } from "./components/MacbookScrollDemo";
 import { ParticleBackground } from "./components/ParticleBackground";
 import { CTAButton } from "./components/CTAButton";
 import { InfiniteMarquee } from "./components/InfinityMarquee";
-import "../../../styles/index.css"
+import "../../../styles/index.css";
 
 const fadeUp = (delay = 0) => ({
   initial: { y: 40, opacity: 0 },

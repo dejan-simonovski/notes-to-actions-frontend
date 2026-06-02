@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback, type ChangeEvent, type FormEvent } from "react";
 
 export interface Message {
   id: string;
@@ -24,7 +24,7 @@ export function useChatbot() {
     setIsOpen((prev) => !prev);
   }, []);
 
-  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   }, []);
 
@@ -54,7 +54,7 @@ export function useChatbot() {
     return "I can help you navigate this app and manage your meeting notes. Try asking me how to create a 'new meeting', check the 'action items', or explore the 'dashboard'.";
   };
 
-  const sendMessage = useCallback((e?: React.FormEvent) => {
+  const sendMessage = useCallback((e?: FormEvent<HTMLFormElement>) => {
     if (e) e.preventDefault();
     if (!inputValue.trim()) return;
 
@@ -69,7 +69,6 @@ export function useChatbot() {
     setInputValue("");
     setIsTyping(true);
 
-    // Simulate bot response with a dynamic delay
     setTimeout(() => {
       const botMessage: Message = {
         id: `bot-${Date.now()}`,

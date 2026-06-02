@@ -54,9 +54,9 @@ export function ChatbotWidget() {
               <div
                 key={msg.id}
                 className={`flex gap-2.5 max-w-[85%] ${msg.sender === "user"
-                    ? "ml-auto flex-row-reverse"
-                    : "mr-auto"
-                  }`}
+                  ? "ml-auto flex-row-reverse"
+                  : "mr-auto"
+                }`}
               >
                 {msg.sender === "bot" && (
                   <div className="w-8 h-8 rounded-full bg-indigo-50 flex items-center justify-center shrink-0 border border-indigo-100">
@@ -67,18 +67,18 @@ export function ChatbotWidget() {
                 <div>
                   <div
                     className={`px-4 py-2.5 rounded-2xl text-sm leading-relaxed shadow-sm ${msg.sender === "user"
-                        ? "bg-indigo-600 text-white rounded-tr-none"
-                        : "bg-white text-gray-850 border border-gray-100 rounded-tl-none"
-                      }`}
+                      ? "bg-indigo-600 text-white rounded-tr-none"
+                      : "bg-white text-gray-850 border border-gray-100 rounded-tl-none"
+                    }`}
                   >
                     {msg.text}
                   </div>
 
                   <span
                     className={`text-[10px] text-gray-400 mt-1 block px-1 ${msg.sender === "user"
-                        ? "text-right"
-                        : "text-left"
-                      }`}
+                      ? "text-right"
+                      : "text-left"
+                    }`}
                   >
                     {msg.timestamp.toLocaleTimeString([], {
                       hour: "2-digit",
