@@ -51,7 +51,6 @@ export const MacbookScroll = ({
 
     const scaleX = useTransform(scrollYProgress, [0, 0.3], [1.2, isMobile ? 1 : 1.5]);
     const scaleY = useTransform(scrollYProgress, [0, 0.3], [0.6, isMobile ? 1 : 1.5]);
-    // ✅ Fix 1: scoped to [0, 0.3] and stops at 460px instead of flying to 1500px
     const translate = useTransform(scrollYProgress, [0, 0.3], [0, 460]);
     const rotate = useTransform(scrollYProgress, [0.1, 0.12, 0.3], [-28, -28, 0]);
     const textTransform = useTransform(scrollYProgress, [0, 0.3], [0, 100]);
@@ -61,7 +60,6 @@ export const MacbookScroll = ({
         <div
             ref={ref}
             className="flex min-h-[200vh] shrink-0 transform flex-col items-center justify-start py-0 [perspective:800px] md:py-80"
-        // ✅ removed scale-[0.35] sm:scale-50 md:scale-100 — let it be full size
         >
             <motion.h2
                 style={{ translateY: textTransform, opacity: textOpacity }}
@@ -74,7 +72,6 @@ export const MacbookScroll = ({
                 )}
             </motion.h2>
 
-            {/* ✅ sticky wrapper — increased top offset so it lands nicely */}
             <div className="sticky top-[5vh] flex flex-col items-center">
                 <Lid src={src} scaleX={scaleX} scaleY={scaleY} rotate={rotate} translate={translate} />
                 <div className="relative -z-10 h-[22rem] w-[32rem] overflow-hidden rounded-2xl bg-gray-200 dark:bg-[#272729]">
@@ -170,7 +167,6 @@ export const Trackpad = () => {
 export const Keypad = () => {
     return (
         <div className="mx-1 h-full [transform:translateZ(0)] rounded-md bg-[#050505] p-1 [will-change:transform]">
-            {/* First Row */}
             <div className="mb-[2px] flex w-full shrink-0 gap-[2px]">
                 <KBtn className="w-10 items-end justify-start pb-[2px] pl-[4px]" childrenClassName="items-start">esc</KBtn>
                 <KBtn><IconBrightnessDown className="h-[6px] w-[6px]" /><span className="mt-1 inline-block">F1</span></KBtn>
@@ -192,7 +188,6 @@ export const Keypad = () => {
                 </KBtn>
             </div>
 
-            {/* Second Row */}
             <div className="mb-[2px] flex w-full shrink-0 gap-[2px]">
                 <KBtn><span className="block">~</span><span className="mt-1 block">`</span></KBtn>
                 <KBtn><span className="block">!</span><span className="block">1</span></KBtn>
@@ -210,7 +205,6 @@ export const Keypad = () => {
                 <KBtn className="w-10 items-end justify-end pr-[4px] pb-[2px]" childrenClassName="items-end">delete</KBtn>
             </div>
 
-            {/* Third Row */}
             <div className="mb-[2px] flex w-full shrink-0 gap-[2px]">
                 <KBtn className="w-10 items-end justify-start pb-[2px] pl-[4px]" childrenClassName="items-start">tab</KBtn>
                 <KBtn><span className="block">Q</span></KBtn>
@@ -228,7 +222,6 @@ export const Keypad = () => {
                 <KBtn><span className="block">{`|`}</span><span className="block">{`\\`}</span></KBtn>
             </div>
 
-            {/* Fourth Row */}
             <div className="mb-[2px] flex w-full shrink-0 gap-[2px]">
                 <KBtn className="w-[2.8rem] items-end justify-start pb-[2px] pl-[4px]" childrenClassName="items-start">caps lock</KBtn>
                 <KBtn><span className="block">A</span></KBtn>
@@ -261,7 +254,6 @@ export const Keypad = () => {
                 <KBtn className="w-[3.65rem] items-end justify-end pr-[4px] pb-[2px]" childrenClassName="items-end">shift</KBtn>
             </div>
 
-            {/* Sixth Row */}
             <div className="mb-[2px] flex w-full shrink-0 gap-[2px]">
                 <KBtn childrenClassName="h-full justify-between py-[4px]">
                     <div className="flex w-full justify-end pr-1"><span className="block">fn</span></div>
