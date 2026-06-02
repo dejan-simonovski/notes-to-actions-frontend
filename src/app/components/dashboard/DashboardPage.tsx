@@ -87,18 +87,7 @@ export function Dashboard() {
                     </div>
                   </div>
                   <div className="self-start sm:self-auto shrink-0">
-<<<<<<< HEAD
                     <StatusBadge status={meeting.status} />
-=======
-                    <span
-                      className={`inline-block px-3 py-1 rounded-full text-sm ${meeting.status === "Completed"
-                        ? "bg-green-100 text-green-700"
-                        : "bg-amber-100 text-amber-700"
-                      }`}
-                    >
-                      {meeting.status}
-                    </span>
->>>>>>> e9f1a57 (refactor: apply eslint to codebase)
                   </div>
                 </div>
               </Link>

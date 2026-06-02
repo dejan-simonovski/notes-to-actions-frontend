@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { MotionValue, motion, useScroll, useTransform } from "motion/react";
-import { cn } from "../../ui/utils";
+import { cn } from "../../utils/utils";
 import {
   IconBrightnessDown,
   IconBrightnessUp,
@@ -30,10 +30,10 @@ export const MacbookScroll = ({
   title,
   badge,
 }: {
-    src?: string;
-    showGradient?: boolean;
-    title?: string | React.ReactNode;
-    badge?: React.ReactNode;
+  src?: string;
+  showGradient?: boolean;
+  title?: string | React.ReactNode;
+  badge?: React.ReactNode;
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -67,7 +67,7 @@ export const MacbookScroll = ({
       >
         {title || (
           <span>
-                        This Macbook is built with Tailwindcss. <br /> No kidding.
+            This Macbook is built with Tailwindcss. <br /> No kidding.
           </span>
         )}
       </motion.h2>
@@ -108,11 +108,11 @@ export const Lid = ({
   translate,
   src,
 }: {
-    scaleX: MotionValue<number>;
-    scaleY: MotionValue<number>;
-    rotate: MotionValue<number>;
-    translate: MotionValue<number>;
-    src?: string;
+  scaleX: MotionValue<number>;
+  scaleY: MotionValue<number>;
+  rotate: MotionValue<number>;
+  translate: MotionValue<number>;
+  src?: string;
 }) => {
   return (
     <div className="relative [perspective:800px]">
@@ -299,10 +299,10 @@ export const KBtn = ({
   childrenClassName,
   backlit = true,
 }: {
-    className?: string;
-    children?: React.ReactNode;
-    childrenClassName?: string;
-    backlit?: boolean;
+  className?: string;
+  children?: React.ReactNode;
+  childrenClassName?: string;
+  backlit?: boolean;
 }) => {
   return (
     <div className={cn("[transform:translateZ(0)] rounded-[4px] p-[0.5px] [will-change:transform]", backlit && "bg-white/[0.2] shadow-xl shadow-white")}>
