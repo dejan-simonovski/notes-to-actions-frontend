@@ -1,5 +1,6 @@
 import { Outlet, Link, useLocation } from "react-router";
 import { Home, FileText, CheckSquare } from "lucide-react";
+import { ChatbotWidget } from "./ChatbotWidget";
 
 export function Layout() {
   const location = useLocation();
@@ -59,6 +60,8 @@ export function Layout() {
       <main className="flex-1 overflow-auto">
         <Outlet />
       </main>
+
+      <ChatbotWidget />
     </div>
   );
 }
