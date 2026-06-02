@@ -1,13 +1,10 @@
-import { Outlet, Link, useLocation } from "react-router";
+import { Outlet, Link } from "react-router";
 import { Home, FileText, CheckSquare } from "lucide-react";
 import { ChatbotWidget } from "./ChatbotWidget";
+import { useLayout } from "../../hooks/useLayout";
 
 export function Layout() {
-  const location = useLocation();
-
-  const isActive = (path: string) => {
-    return location.pathname.startsWith(path);
-  };
+  const { location, isActive } = useLayout();
 
   return (
     <div className="flex h-screen bg-gray-50">
