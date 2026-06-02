@@ -3,14 +3,11 @@ import {
   Download,
   RefreshCw,
   CheckCircle,
-  Clock,
-  Circle,
 } from "lucide-react";
 
 import { useMeetingResults } from "../../hooks/useMeetingResults";
-import {
-  formatTranscript,
-} from "../../utils/meetingUtils";
+import { formatTranscript } from "../../../utils/meetingUtils";
+import { StatusBadge } from "../ui/StatusBadge";
 
 export function MeetingResults() {
   const {
@@ -37,23 +34,10 @@ export function MeetingResults() {
     );
   }
 
-  const getStatusIcon = (status: string) => {
-    switch (status) {
-      case "Done":
-        return <CheckCircle className="text-green-600" size={18} />;
-      case "In Progress":
-        return <Clock className="text-amber-600" size={18} />;
-      default:
-        return <Circle className="text-gray-400" size={18} />;
-    }
-  };
-
   return (
     <div className="h-full flex flex-col">
-
       <div className="border-b border-gray-200 bg-white px-4 sm:px-6 md:px-8 py-4 sm:py-6">
         <div className="max-w-7xl mx-auto flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-
           <div>
             <h1 className="text-gray-900 mb-1 text-lg sm:text-xl md:text-2xl">
               {meeting.title}
@@ -68,7 +52,6 @@ export function MeetingResults() {
           </div>
 
           <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-
             <button
               onClick={handleRegenerate}
               className="flex items-center gap-1.5 px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-gray-700 text-sm"
@@ -92,18 +75,14 @@ export function MeetingResults() {
               <Copy size={16} />
               Copy
             </button>
-
           </div>
         </div>
       </div>
 
       <div className="flex-1 overflow-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-4 sm:py-6">
-
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden flex flex-col lg:max-h-[calc(100vh-200px)]">
-
               <div className="p-4 sm:p-6 border-b border-gray-200">
                 <h2 className="text-gray-900 text-base sm:text-lg font-semibold">
                   Transcript
@@ -137,7 +116,6 @@ export function MeetingResults() {
             </div>
 
             <div className="space-y-4 sm:space-y-6">
-
               <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 sm:p-6">
                 <h3 className="text-gray-900 mb-3 font-semibold">
                   Meeting Summary
@@ -153,7 +131,6 @@ export function MeetingResults() {
                 </ul>
               </div>
 
-              {/* DECISIONS */}
               <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 sm:p-6">
                 <h3 className="text-gray-900 mb-3 font-semibold">
                   Key Decisions
@@ -170,7 +147,6 @@ export function MeetingResults() {
               </div>
 
               <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 sm:p-6">
-
                 <h3 className="text-gray-900 mb-3 font-semibold">
                   Action Items
                 </h3>
@@ -181,9 +157,8 @@ export function MeetingResults() {
                       key={item.id}
                       className="flex items-start gap-3 p-3 border border-gray-200 rounded-lg hover:border-gray-300"
                     >
-
                       <div className="flex-shrink-0 mt-0.5">
-                        {getStatusIcon(item.status)}
+                        <StatusBadge status={item.status} />
                       </div>
 
                       <div className="flex-1 min-w-0">
@@ -204,24 +179,15 @@ export function MeetingResults() {
                             <span className="text-gray-900">
                               {new Date(item.deadline).toLocaleDateString(
                                 "en-US",
-                                { month: "short", day: "numeric" }
+                                {
+                                  month: "short",
+                                  day: "numeric",
+                                }
                               )}
                             </span>
                           </span>
                         </div>
                       </div>
-
-                      <span
-                        className={`px-2 py-1 rounded-full text-xs ${item.status === "Done"
-                          ? "bg-green-100 text-green-700"
-                          : item.status === "In Progress"
-                            ? "bg-amber-100 text-amber-700"
-                            : "bg-gray-100 text-gray-700"
-                          }`}
-                      >
-                        {item.status}
-                      </span>
-
                     </div>
                   ))}
                 </div>
@@ -243,7 +209,6 @@ export function MeetingResults() {
                   ))}
                 </div>
               </div>
-
             </div>
           </div>
         </div>
