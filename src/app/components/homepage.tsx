@@ -3,6 +3,8 @@ import { motion } from "motion/react";
 import { MacbookScrollDemo } from "./macbook-scroll-demo";
 import { ParticleBackground } from "./ParticleBackground";
 import { CTAButton } from "./CTAButton";
+import { InfiniteMarquee } from "./infinitymarquee";
+import "../../styles/index.css";
 
 const fadeUp = (delay = 0) => ({
   initial: { y: 40, opacity: 0 },
@@ -111,6 +113,7 @@ export const HomePage = () => (
         </motion.p>
 
         <MacbookScrollDemo />
+        <InfiniteMarquee />
       </div>
     </section>
     <section className="relative z-10 py-24">
