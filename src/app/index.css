@@ -6,6 +6,25 @@ body,
     margin: 0;
     padding: 0;
     width: 100%;
-    /* ✅ never set height: 100vh with overflow hidden here */
     overflow-x: hidden;
+}
+
+@keyframes marquee-left {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+@keyframes marquee-right {
+    from {
+        transform: translateX(-50%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
 }
