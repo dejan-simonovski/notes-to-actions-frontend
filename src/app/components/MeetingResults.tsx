@@ -1,12 +1,22 @@
+import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
 import { Copy, Download, RefreshCw, CheckCircle, Circle, Clock } from "lucide-react";
 import { mockMeetings } from "../data/mockData";
+import { useMeetingContext } from "../context/MeetingContext";
 import { toast } from "sonner";
 
 export function MeetingResults() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { setCurrentTranscript } = useMeetingContext();
   const meeting = mockMeetings.find(m => m.id === id);
+
+  useEffect(() => {
+    if (meeting?.transcript) {
+      setCurrentTranscript(meeting.transcript);
+    }
+    return () => setCurrentTranscript(null);
+  }, [meeting?.transcript, setCurrentTranscript]);
 
   if (!meeting) {
     return (

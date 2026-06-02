@@ -1,86 +1,92 @@
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback } from 'react';
+import { chatWithTranscript } from '../services/meetingService';
+import { useMeetingContext } from '../context/MeetingContext';
 
-export interface Message {
+export type Message = {
   id: string;
   text: string;
-  sender: "user" | "bot";
+  sender: 'user' | 'bot';
   timestamp: Date;
-}
+};
+
+const APP_CONTEXT = `
+You are an AI assistant embedded inside "AI Meeting Notes", a web application that helps teams manage meeting transcripts, extract action items, and track progress.
+
+Application features:
+- Dashboard: Shows recent meetings, stats (total meetings, open action items, completed tasks), and links to each meeting's results.
+- New Meeting: Users can paste a raw text transcript or upload a .txt file. Clicking "Generate Insights" sends it to an AI backend which returns an executive summary and a list of action items prioritized by the Eisenhower Matrix (Urgent & Important, Important but Not Urgent, Urgent but Not Important, Low Priority).
+- Meeting Results page: Shows the original transcript, an AI-generated summary, key decisions, action items with assignees and deadlines, and key topics.
+- Action Items Board: A kanban board with columns for "To Do", "In Progress", and "Done". Shows all tasks extracted across all meetings.
+- Meeting Assistant (this chatbot): Answers questions about the app or about the currently open meeting transcript. When a meeting is open, it answers strictly from the transcript context.
+
+The backend is a Python FastAPI server running on http://localhost:8000. It uses OpenAI GPT for structured outputs.
+Slack integration: after each analysis the results are automatically posted to a configured Slack webhook.
+
+Answer any question the user has about using this application or about their meetings. Be concise and helpful.
+`.trim();
 
 export function useChatbot() {
+  const { currentTranscript } = useMeetingContext();
   const [isOpen, setIsOpen] = useState(false);
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
-      id: "initial",
-      text: "Hi! I am your AI Meeting Assistant. I can help you summarize your meetings, create action items, or navigate the application. What can I do for you today?",
-      sender: "bot",
+      id: 'initial',
+      text: 'Hi! I am your AI Meeting Assistant powered by OpenAI. Ask me anything — about this app, your meetings, action items, or paste a question about a specific transcript.',
+      sender: 'bot',
       timestamp: new Date(),
     },
   ]);
 
-  const toggleOpen = useCallback(() => {
-    setIsOpen((prev) => !prev);
-  }, []);
+  const toggleOpen = useCallback(() => setIsOpen((prev) => !prev), []);
 
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
   }, []);
 
-  const getBotResponse = (userText: string): string => {
-    const text = userText.toLowerCase();
+  const sendMessage = useCallback(
+    async (e?: React.FormEvent) => {
+      if (e) e.preventDefault();
+      if (!inputValue.trim()) return;
 
-    if (text.includes("action") || text.includes("board") || text.includes("todo") || text.includes("task")) {
-      return "The Action Items Board displays all tasks extracted from your meetings. You can mark items as complete, filter by priority, or assign deadlines. Click 'Action Items' in the sidebar to view it.";
-    }
+      const userText = inputValue.trim();
 
-    if (text.includes("new") || text.includes("create") || text.includes("upload") || text.includes("record") || text.includes("meeting")) {
-      return "To analyze a new meeting, select 'New Meeting' in the sidebar. You can upload an audio file, write or paste a transcript, and our AI will automatically extract action items, key decisions, and a concise summary.";
-    }
-
-    if (text.includes("dashboard") || text.includes("home") || text.includes("overview")) {
-      return "The Dashboard shows your recent meeting summaries, quick stats, and pending high-priority actions. Click 'Dashboard' in the sidebar to return to the home screen.";
-    }
-
-    if (text.includes("hello") || text.includes("hi ") || text === "hi" || text.includes("hey")) {
-      return "Hello! Hope you are having a productive day. How can I help you with your meetings or action items?";
-    }
-
-    if (text.includes("thank") || text.includes("thanks")) {
-      return "You're very welcome! Let me know if you need anything else.";
-    }
-
-    return "I can help you navigate this app and manage your meeting notes. Try asking me how to create a 'new meeting', check the 'action items', or explore the 'dashboard'.";
-  };
-
-  const sendMessage = useCallback((e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    if (!inputValue.trim()) return;
-
-    const userMessage: Message = {
-      id: `user-${Date.now()}`,
-      text: inputValue.trim(),
-      sender: "user",
-      timestamp: new Date(),
-    };
-
-    setMessages((prev) => [...prev, userMessage]);
-    setInputValue("");
-    setIsTyping(true);
-
-    // Simulate bot response with a dynamic delay
-    setTimeout(() => {
-      const botMessage: Message = {
-        id: `bot-${Date.now()}`,
-        text: getBotResponse(userMessage.text),
-        sender: "bot",
+      const userMessage: Message = {
+        id: `user-${Date.now()}`,
+        text: userText,
+        sender: 'user',
         timestamp: new Date(),
       };
-      setMessages((prev) => [...prev, botMessage]);
+
+      setMessages((prev) => [...prev, userMessage]);
+      setInputValue('');
+      setIsTyping(true);
+
+      const context = currentTranscript ?? APP_CONTEXT;
+
+      let botText: string;
+      try {
+        botText = await chatWithTranscript(context, userText);
+      } catch {
+        botText =
+          'Sorry, I could not reach the AI service right now. Please make sure the backend server is running on http://localhost:8000 and your OPENAI_API_KEY is set in the backend .env file.';
+      }
+
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: `bot-${Date.now()}`,
+          text: botText,
+          sender: 'bot',
+          timestamp: new Date(),
+        },
+      ]);
+
       setIsTyping(false);
-    }, 1200);
-  }, [inputValue]);
+    },
+    [inputValue, currentTranscript],
+  );
 
   return {
     isOpen,
