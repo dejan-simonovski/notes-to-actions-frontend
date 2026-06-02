@@ -1,23 +1,52 @@
-import { useState, useRef, type DragEvent } from "react";
-import { getAllActionItems, ActionItem } from "../../app/data/mockData";
+import { useState, useRef, type DragEvent } from 'react';
+import { useAppSelector, useAppDispatch } from '../store/hooks';
+import { updateActionItemStatus } from '../store/meetingsSlice';
+import type { TaskStatus } from '../types/meeting';
 
-type Status = "To Do" | "In Progress" | "Done";
+export type FlatActionItem = {
+  meetingId: string;
+  index: number;
+  description: string;
+  assignee_name: string;
+  priority: string;
+  status: TaskStatus;
+  meetingTitle: string;
+};
+
+const uniqueId = (meetingId: string, index: number) => `${meetingId}-${index}`;
 
 export function useActionItems() {
-  const [actionItems, setActionItems] = useState<ActionItem[]>(getAllActionItems());
-  const [dragOverCol, setDragOverCol] = useState<Status | null>(null);
+  const dispatch = useAppDispatch();
+  const meetings = useAppSelector((state) => state.meetings.meetings);
+
+  const flatItems: FlatActionItem[] = meetings.flatMap((m) =>
+    m.action_items.map((item, index) => ({
+      meetingId: m.id,
+      index,
+      description: item.description,
+      assignee_name: item.assignee_name,
+      priority: item.priority,
+      status: item.status,
+      meetingTitle: m.title,
+    })),
+  );
+
+  const [dragOverCol, setDragOverCol] = useState<TaskStatus | null>(null);
   const [dragOverItemId, setDragOverItemId] = useState<string | null>(null);
   const draggingId = useRef<string | null>(null);
 
-  const getItemsByStatus = (status: Status) =>
-    actionItems.filter((item) => item.status === status);
+  const getItemsByStatus = (status: TaskStatus) =>
+    flatItems.filter((item) => item.status === status);
 
-  const handleDragStart = (e: DragEvent<HTMLDivElement>, id: string) => {
+  const handleDragStart = (
+    e: DragEvent<HTMLDivElement>,
+    id: string,
+  ) => {
     draggingId.current = id;
-    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.effectAllowed = 'move';
     setTimeout(() => {
       const el = document.getElementById(`card-${id}`);
-      if (el) el.style.opacity = "0.4";
+      if (el) el.style.opacity = '0.4';
     }, 0);
   };
 
@@ -26,43 +55,36 @@ export function useActionItems() {
     setDragOverCol(null);
     setDragOverItemId(null);
     const el = document.getElementById(`card-${id}`);
-    if (el) el.style.opacity = "1";
+    if (el) el.style.opacity = '1';
   };
 
-  const handleDropOnColumn = (status: Status) => {
+  const dispatchStatusUpdate = (cardId: string, status: TaskStatus) => {
+    const [meetingId, rawIndex] = cardId.split('-');
+    const index = Number(rawIndex);
+    dispatch(updateActionItemStatus({ meetingId, itemIndex: index, status }));
+  };
+
+  const handleDropOnColumn = (status: TaskStatus) => {
     if (!draggingId.current) return;
-    setActionItems((prev) =>
-      prev.map((item) =>
-        item.id === draggingId.current ? { ...item, status } : item
-      )
-    );
+    dispatchStatusUpdate(draggingId.current, status);
     setDragOverCol(null);
     setDragOverItemId(null);
   };
 
-  const handleDropOnItem = (e: DragEvent<HTMLDivElement>, targetId: string, status: Status) => {
+  const handleDropOnItem = (
+    e: DragEvent<HTMLDivElement>,
+    targetId: string,
+    status: TaskStatus,
+  ) => {
     e.stopPropagation();
     if (!draggingId.current || draggingId.current === targetId) return;
-
-    setActionItems((prev) => {
-      const updated = prev.map((item) =>
-        item.id === draggingId.current ? { ...item, status } : item
-      );
-      const dragIdx = updated.findIndex((i) => i.id === draggingId.current);
-      const targetIdx = updated.findIndex((i) => i.id === targetId);
-      if (dragIdx === -1 || targetIdx === -1) return updated;
-      const reordered = [...updated];
-      const [moved] = reordered.splice(dragIdx, 1);
-      reordered.splice(targetIdx, 0, moved);
-      return reordered;
-    });
-
+    dispatchStatusUpdate(draggingId.current, status);
     setDragOverCol(null);
     setDragOverItemId(null);
   };
 
   return {
-    actionItems,
+    actionItems: flatItems,
     dragOverCol,
     dragOverItemId,
     setDragOverCol,
@@ -72,5 +94,6 @@ export function useActionItems() {
     handleDragEnd,
     handleDropOnColumn,
     handleDropOnItem,
+    uniqueId,
   };
 }
