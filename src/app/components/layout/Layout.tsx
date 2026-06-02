@@ -2,6 +2,7 @@ import { Outlet, Link } from "react-router";
 import { Home, FileText, CheckSquare } from "lucide-react";
 import { ChatbotWidget } from "./ChatbotWidget";
 import { useLayout } from "../../hooks/useLayout";
+import { AppTitle } from "./AppTitle";
 
 export function Layout() {
   const { location, isActive } = useLayout();
@@ -10,7 +11,7 @@ export function Layout() {
     <div className="flex h-screen bg-gray-50">
       <aside className="w-64 bg-white border-r border-gray-200 flex flex-col">
         <div className="p-6">
-          <h1 className="text-indigo-600">AI Meeting Notes</h1>
+          <AppTitle />
         </div>
 
         <nav className="flex-1 px-4 space-y-1">
