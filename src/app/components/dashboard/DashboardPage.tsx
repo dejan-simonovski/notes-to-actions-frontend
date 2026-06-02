@@ -86,7 +86,9 @@ export function Dashboard() {
                       </div>
                     </div>
                   </div>
-                  <StatusBadge status={meeting.status} />
+                  <div className="self-start sm:self-auto shrink-0">
+                    <StatusBadge status={meeting.status} />
+                  </div>
                 </div>
               </Link>
             ))}
