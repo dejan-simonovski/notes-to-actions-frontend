@@ -179,3 +179,31 @@
     line-height: 1.5;
   }
 }
+
+@keyframes particle-float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-30px) rotate(180deg);
+  }
+
+  100% {
+    transform: translateY(0) rotate(360deg);
+  }
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+      rgba(165, 130, 255, 0.35) 0%,
+      rgba(99, 102, 241, 0.08) 100%);
+  animation: particle-float 8s ease-in-out infinite;
+}
+
+.homepage-root {
+  margin: 0;
+  padding: 0;
+}
