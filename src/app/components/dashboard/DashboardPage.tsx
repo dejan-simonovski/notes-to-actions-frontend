@@ -1,6 +1,9 @@
 import { Link } from "react-router";
 import { Calendar, CheckCircle, Clock, Plus } from "lucide-react";
+
 import { useDashboard } from "../../hooks/useDashboard";
+import { formatDate } from "../../utils/dateUtils";
+import { StatusBadge } from "../ui/StatusBadge";
 
 export function Dashboard() {
   const {
@@ -23,114 +26,68 @@ export function Dashboard() {
 
           <Link
             to="/app/new-meeting"
-            className="flex items-center justify-center gap-2 bg-indigo-600 text-white px-4 py-2.5 sm:px-6 sm:py-3 rounded-lg hover:bg-indigo-700 transition-colors text-sm sm:text-base w-full sm:w-auto"
+            className="flex items-center justify-center gap-2 bg-indigo-600 text-white px-4 py-2.5 rounded-lg hover:bg-indigo-700"
           >
             <Plus size={18} />
             New Meeting
           </Link>
         </div>
-
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
-          <div className="bg-white rounded-xl p-5 sm:p-6 border border-gray-200 shadow-sm">
-            <div className="flex items-center justify-between mb-3 sm:mb-4">
-              <div className="bg-indigo-100 p-2.5 sm:p-3 rounded-lg">
-                <Calendar className="text-indigo-600" size={22} />
-              </div>
-            </div>
 
-            <div className="text-2xl sm:text-3xl font-semibold text-gray-900 mb-1">
-              {totalMeetings}
-            </div>
-
-            <div className="text-gray-600 text-sm sm:text-base">
-              Total Meetings
-            </div>
+          <div className="bg-white rounded-xl p-6 border">
+            <Calendar className="text-indigo-600" size={22} />
+            <div className="text-3xl font-semibold">{totalMeetings}</div>
+            <div className="text-gray-600">Total Meetings</div>
           </div>
 
-          <div className="bg-white rounded-xl p-5 sm:p-6 border border-gray-200 shadow-sm">
-            <div className="flex items-center justify-between mb-3 sm:mb-4">
-              <div className="bg-amber-100 p-2.5 sm:p-3 rounded-lg">
-                <Clock className="text-amber-600" size={22} />
-              </div>
-            </div>
-
-            <div className="text-2xl sm:text-3xl font-semibold text-gray-900 mb-1">
-              {openActionItems}
-            </div>
-
-            <div className="text-gray-600 text-sm sm:text-base">
-              Open Action Items
-            </div>
+          <div className="bg-white rounded-xl p-6 border">
+            <Clock className="text-amber-600" size={22} />
+            <div className="text-3xl font-semibold">{openActionItems}</div>
+            <div className="text-gray-600">Open Action Items</div>
           </div>
 
-          <div className="bg-white rounded-xl p-5 sm:p-6 border border-gray-200 shadow-sm">
-            <div className="flex items-center justify-between mb-3 sm:mb-4">
-              <div className="bg-green-100 p-2.5 sm:p-3 rounded-lg">
-                <CheckCircle className="text-green-600" size={22} />
-              </div>
-            </div>
-
-            <div className="text-2xl sm:text-3xl font-semibold text-gray-900 mb-1">
-              {completedTasks}
-            </div>
-
-            <div className="text-gray-600 text-sm sm:text-base">
-              Completed Tasks
-            </div>
+          <div className="bg-white rounded-xl p-6 border">
+            <CheckCircle className="text-green-600" size={22} />
+            <div className="text-3xl font-semibold">{completedTasks}</div>
+            <div className="text-gray-600">Completed Tasks</div>
           </div>
+
         </div>
 
-        <div className="bg-white rounded-xl border border-gray-200 shadow-sm">
-          <div className="p-4 sm:p-6 border-b border-gray-200">
-            <h2 className="text-gray-900 text-base sm:text-lg font-semibold">
-              Recent Meetings
-            </h2>
+        <div className="bg-white rounded-xl border shadow-sm">
+
+          <div className="p-6 border-b">
+            <h2 className="text-lg font-semibold">Recent Meetings</h2>
           </div>
 
-          <div className="divide-y divide-gray-200">
+          <div className="divide-y">
             {meetings.map((meeting) => (
               <Link
                 key={meeting.id}
                 to={`/app/meeting/${meeting.id}`}
-                className="block p-4 sm:p-6 hover:bg-gray-50 transition-colors"
+                className="block p-6 hover:bg-gray-50"
               >
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-gray-900 font-medium mb-2 truncate">
+                <div className="flex justify-between">
+
+                  <div className="flex-1">
+                    <h3 className="font-medium mb-2">
                       {meeting.title}
                     </h3>
 
-                    <div className="flex flex-wrap items-center gap-3 text-gray-600 text-sm">
-                      <div className="flex items-center gap-1.5">
+                    <div className="text-sm text-gray-600 flex gap-3">
+                      <div className="flex items-center gap-1">
                         <Calendar size={14} />
-                        <span>
-                          {new Date(meeting.date).toLocaleDateString("en-US", {
-                            month: "short",
-                            day: "numeric",
-                            year: "numeric",
-                          })}
-                        </span>
+                        {formatDate(meeting.date)}
                       </div>
 
-                      <div className="flex items-center gap-1.5">
+                      <div className="flex items-center gap-1">
                         <CheckCircle size={14} />
-                        <span>
-                          {meeting.completedCount}/
-                          {meeting.actionItemsCount} tasks completed
-                        </span>
+                        {meeting.completedCount}/{meeting.actionItemsCount} tasks
                       </div>
                     </div>
                   </div>
-
                   <div className="self-start sm:self-auto shrink-0">
-                    <span
-                      className={`inline-block px-3 py-1 rounded-full text-sm ${meeting.status === "Completed"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-amber-100 text-amber-700"
-                        }`}
-                    >
-                      {meeting.status}
-                    </span>
+                    <StatusBadge status={meeting.status} />
                   </div>
                 </div>
               </Link>
