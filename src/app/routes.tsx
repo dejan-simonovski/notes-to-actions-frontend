@@ -1,10 +1,10 @@
 import { createBrowserRouter } from "react-router";
-import { Dashboard } from "./components/Dashboard";
-import { NewMeeting } from "./components/NewMeeting";
-import { MeetingResults } from "./components/MeetingResults";
-import { ActionItemsBoard } from "./components/ActionItemsBoard";
-import { Layout } from "./components/Layout";
-import { HomePage } from "./components/homepage";
+import { Dashboard } from "./components/dashboard/DashboardPage";
+import { NewMeeting } from "./components/meetings/NewMeeting";
+import { MeetingResults } from "./components/meetings/MeetingResults";
+import { ActionItemsBoard } from "./components/action-items/ActionItemsPage";
+import { Layout } from "./components/layout/Layout";
+import { HomePage } from "./components/home/HomePage";
 
 export const router = createBrowserRouter([
   {

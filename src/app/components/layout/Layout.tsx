@@ -52,7 +52,7 @@ export function Layout() {
         </nav>
       </aside>
 
-      <main className="flex-1 overflow-auto">
+      <main className="flex-1 overflow-y-auto min-h-0">
         <Outlet />
       </main>
 

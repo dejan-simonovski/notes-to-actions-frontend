@@ -1,10 +1,10 @@
 "use client";
 import { motion } from "motion/react";
-import { MacbookScrollDemo } from "./macbook-scroll-demo";
-import { ParticleBackground } from "./ParticleBackground";
-import { CTAButton } from "./CTAButton";
-import { InfiniteMarquee } from "./infinitymarquee";
-import "../../styles/index.css";
+import { MacbookScrollDemo } from "./components/MacbookScrollDemo";
+import { ParticleBackground } from "./components/ParticleBackground";
+import { CTAButton } from "./components/CTAButton";
+import { InfiniteMarquee } from "./components/InfinityMarquee";
+import "../../../styles/index.css"
 
 const fadeUp = (delay = 0) => ({
   initial: { y: 40, opacity: 0 },
@@ -132,7 +132,7 @@ export const HomePage = () => (
             Get Started
           </CTAButton>
           <a
-            href="/action-items"
+            href="/app/action-items"
             className="text-sm font-medium text-indigo-300 underline-offset-4 hover:underline"
           >
             View Action Items →

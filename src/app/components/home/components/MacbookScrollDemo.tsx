@@ -1,5 +1,5 @@
 import React from "react";
-import { MacbookScroll } from "./macbook-scroll";
+import { MacbookScroll } from "./MacbookScroll";
 
 export function MacbookScrollDemo() {
   return (

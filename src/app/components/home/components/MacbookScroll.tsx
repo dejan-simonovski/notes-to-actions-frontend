@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import { MotionValue, motion, useScroll, useTransform } from "motion/react";
-import { cn } from "../components/ui/utils";
+import { cn } from "../../ui/utils";
 import {
     IconBrightnessDown,
     IconBrightnessUp,
