@@ -64,7 +64,7 @@ export function Dashboard() {
             {mockMeetings.map((meeting) => (
               <Link
                 key={meeting.id}
-                to={`/meeting/${meeting.id}`}
+                to={`/app/meeting/${meeting.id}`}
                 className="block p-4 sm:p-6 hover:bg-gray-50 transition-colors"
               >
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
