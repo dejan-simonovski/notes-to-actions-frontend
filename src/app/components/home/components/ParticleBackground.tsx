@@ -1,7 +1,6 @@
 import React, { useMemo } from "react";
 
 export const ParticleBackground = () => {
-  // Generate particles once so they don't re-randomize on every render
   const particles = useMemo(
     () =>
       Array.from({ length: 18 }).map((_, i) => ({

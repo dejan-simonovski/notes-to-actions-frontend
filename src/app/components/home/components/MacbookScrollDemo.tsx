@@ -3,7 +3,6 @@ import { MacbookScroll } from "./MacbookScroll";
 
 export function MacbookScrollDemo() {
   return (
-    // ✅ overflow-hidden was killing the scroll — removed. Added min-h so it has scroll room.
     <div className="w-full">
       <MacbookScroll
         title={
