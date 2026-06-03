@@ -18,6 +18,7 @@ export type AnalyzeResponse = {
   summary: string;
   action_items: ActionItem[];
   key_topics: string[];
+  transcript: string;
 };
 
 export type ApiResponse<T> = {
@@ -26,10 +27,6 @@ export type ApiResponse<T> = {
   data: T | null;
 };
 
-/**
- * A meeting as stored in Redux — backend shape plus locally-generated
- * fields that the API does not return.
- */
 export type StoredMeeting = AnalyzeResponse & {
   id: string;
   date: string;
