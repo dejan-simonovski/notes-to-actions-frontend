@@ -1,5 +1,5 @@
 import { User, Copy, Check } from "lucide-react";
-import { useState, useCallback } from "react";
+import { useState, useCallback, type MouseEvent } from "react";
 import { useActionItems } from "../../hooks/useActionItems";
 import type { TaskStatus } from "../../types/meeting";
 
@@ -35,7 +35,7 @@ function CopyButton({ text }: { text: string }) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = useCallback(
-    (e: React.MouseEvent) => {
+    (e: MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
 
       const write = () => {
@@ -63,9 +63,9 @@ function CopyButton({ text }: { text: string }) {
       title="Copy title"
       className={`flex-shrink-0 p-1 rounded transition-all duration-150
         ${copied
-          ? "text-green-500 bg-green-50"
-          : "text-gray-400 hover:text-gray-600 hover:bg-gray-100"
-        }`}
+      ? "text-green-500 bg-green-50"
+      : "text-gray-400 hover:text-gray-600 hover:bg-gray-100"
+    }`}
     >
       {copied ? <Check size={13} /> : <Copy size={13} />}
     </button>

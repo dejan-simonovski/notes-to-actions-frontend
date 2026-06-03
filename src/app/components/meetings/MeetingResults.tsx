@@ -1,4 +1,4 @@
-import { Copy, Download, RefreshCw } from 'lucide-react';
+import { Copy, Download } from 'lucide-react';
 import { useMeetingResults } from '../../hooks/useMeetingResults';
 import { TranscriptPanel } from './components/TranscriptPanel';
 import { MeetingSummary } from './components/MeetingSummary';
@@ -12,7 +12,6 @@ export function MeetingResults() {
     meeting,
     handleCopy,
     handleExport,
-    handleRegenerate,
     goBack,
   } = useMeetingResults();
 
@@ -45,13 +44,7 @@ export function MeetingResults() {
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-            <button
-              onClick={handleRegenerate}
-              className="flex items-center gap-1.5 px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-gray-700 text-sm"
-            >
-              <RefreshCw size={16} />
-              Regenerate
-            </button>
+
             <button
               onClick={handleExport}
               className="flex items-center gap-1.5 px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-gray-700 text-sm"
