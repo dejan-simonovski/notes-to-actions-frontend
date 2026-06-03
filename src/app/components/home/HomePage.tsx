@@ -141,7 +141,7 @@ export const HomePage = () => (
       </motion.div>
     </section>
     <footer className="relative z-10 border-t border-white/5 py-8 text-center text-xs text-gray-500">
-      © {new Date().getFullYear()} Notes to Actions · By Team Rocket
+      © {new Date().getFullYear()} Notes to Actions · By Activo
     </footer>
   </main>
 );
