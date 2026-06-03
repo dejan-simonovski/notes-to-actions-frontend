@@ -1,6 +1,6 @@
 import { httpClient } from '../interceptors/httpClient';
 import { API_ROUTES } from '../constants/api';
-import type { AnalyzeResponse, ApiResponse } from '../types/meeting';
+import type { AnalyzeResponse, ApiResponse, ChatMessage, ChatResponse } from '../types/meeting';
 
 export async function analyzeFile(
   file: File,
@@ -14,4 +14,26 @@ export async function analyzeFile(
   );
 
   return data;
+}
+
+export const chatWithTranscript = async (
+  question: string,
+  transcript?: string,
+  history?: ChatMessage[],
+  title?: string,
+  date?: string,
+  summary?: string,
+  action_items?: any[]
+): Promise<string> => {
+  const { data } = await httpClient.post<ApiResponse<ChatResponse>>(API_ROUTES.CHAT, {
+    question,
+    transcript,
+    history,
+    title,
+    date,
+    summary,
+    action_items,
+  });
+
+  return data.data.answer;
 }

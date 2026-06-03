@@ -28,39 +28,14 @@ export function useChatbot() {
     setInputValue(e.target.value);
   }, []);
 
-  const getBotResponse = (userText: string): string => {
-    const text = userText.toLowerCase();
-
-    if (text.includes("action") || text.includes("board") || text.includes("todo") || text.includes("task")) {
-      return "The Action Items Board displays all tasks extracted from your meetings. You can mark items as complete, filter by priority, or assign deadlines. Click 'Action Items' in the sidebar to view it.";
-    }
-
-    if (text.includes("new") || text.includes("create") || text.includes("upload") || text.includes("record") || text.includes("meeting")) {
-      return "To analyze a new meeting, select 'New Meeting' in the sidebar. You can upload an audio file, write or paste a transcript, and our AI will automatically extract action items, key decisions, and a concise summary.";
-    }
-
-    if (text.includes("dashboard") || text.includes("home") || text.includes("overview")) {
-      return "The Dashboard shows your recent meeting summaries, quick stats, and pending high-priority actions. Click 'Dashboard' in the sidebar to return to the home screen.";
-    }
-
-    if (text.includes("hello") || text.includes("hi ") || text === "hi" || text.includes("hey")) {
-      return "Hello! Hope you are having a productive day. How can I help you with your meetings or action items?";
-    }
-
-    if (text.includes("thank") || text.includes("thanks")) {
-      return "You're very welcome! Let me know if you need anything else.";
-    }
-
-    return "I can help you navigate this app and manage your meeting notes. Try asking me how to create a 'new meeting', check the 'action items', or explore the 'dashboard'.";
-  };
-
-  const sendMessage = useCallback((e?: FormEvent<HTMLFormElement>) => {
+  const sendMessage = useCallback(async (e?: FormEvent<HTMLFormElement>) => {
     if (e) e.preventDefault();
     if (!inputValue.trim()) return;
 
+    const userText = inputValue.trim();
     const userMessage: Message = {
       id: `user-${Date.now()}`,
-      text: inputValue.trim(),
+      text: userText,
       sender: "user",
       timestamp: new Date(),
     };
@@ -69,17 +44,40 @@ export function useChatbot() {
     setInputValue("");
     setIsTyping(true);
 
-    setTimeout(() => {
+    try {
+      // Convert current messages to history format
+      const history = messages
+        .filter(msg => msg.id !== "initial") // Skip the initial hardcoded greeting if desired, or keep it. We'll skip it to save tokens.
+        .map(msg => ({
+          role: msg.sender === "bot" ? "assistant" : "user",
+          content: msg.text
+        } as const));
+
+      const { chatWithTranscript } = await import("../services/meetingService");
+      
+      // Call the backend API (without specific meeting context, relying entirely on the Global Context)
+      const answer = await chatWithTranscript(userText, undefined, history);
+
       const botMessage: Message = {
         id: `bot-${Date.now()}`,
-        text: getBotResponse(userMessage.text),
+        text: answer,
         sender: "bot",
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, botMessage]);
+    } catch (error) {
+      console.error("Chatbot Error:", error);
+      const errorMessage: Message = {
+        id: `bot-${Date.now()}`,
+        text: "Sorry, I am having trouble connecting to the server. Please try again later.",
+        sender: "bot",
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
       setIsTyping(false);
-    }, 1200);
-  }, [inputValue]);
+    }
+  }, [inputValue, messages]);
 
   return {
     isOpen,

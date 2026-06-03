@@ -13,6 +13,25 @@ export type ActionItem = {
   status: TaskStatus;
 };
 
+export interface ChatMessage {
+  role: 'user' | 'assistant' | 'system';
+  content: string;
+}
+
+export interface ChatRequest {
+  transcript?: string;
+  question: string;
+  history?: ChatMessage[];
+  title?: string;
+  date?: string;
+  summary?: string;
+  action_items?: ActionItem[];
+}
+
+export interface ChatResponse {
+  answer: string;
+}
+
 export type AnalyzeResponse = {
   title: string;
   summary: string;
