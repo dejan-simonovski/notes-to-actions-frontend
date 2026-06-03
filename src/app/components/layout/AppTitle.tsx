@@ -2,15 +2,9 @@ import { Sparkles } from "lucide-react";
 
 export function AppTitle() {
   return (
-    <div className="relative inline-flex items-center">
-      <Sparkles
-        className="absolute left-47 -top-2 text-yellow-400 opacity-100"
-        size={25}
-      />
-
-      <h1 className="relative text-indigo-600 whitespace-nowrap font-semibold">
-        AI Meeting Notes
-      </h1>
+    <div className="inline-flex items-center gap-5">
+      <h1 className="text-2xl font-bold text-indigo-600">Activo</h1>
+      <Sparkles className="text-yellow-400" size={18} />
     </div>
   );
 }
