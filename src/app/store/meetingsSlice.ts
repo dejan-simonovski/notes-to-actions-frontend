@@ -133,7 +133,7 @@ const meetingsSlice = createSlice({
   name: 'meetings',
   initialState,
   reducers: {
-    addMeeting(state, action: PayloadAction<AnalyzeResponse>) {
+    addMeeting(state, action: PayloadAction<AnalyzeResponse & { transcript?: string }>) {
       const newMeeting: StoredMeeting = {
         ...action.payload,
         id: crypto.randomUUID(),

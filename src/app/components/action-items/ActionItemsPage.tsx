@@ -98,9 +98,9 @@ export function ActionItemsBoard() {
                         onDrop={(e) => handleDropOnItem(e, item.id, column.id)}
                         className={`bg-white p-3 sm:p-4 rounded-lg border shadow-sm cursor-grab active:cursor-grabbing transition-all duration-150 select-none
                           ${isItemOver
-                            ? "border-indigo-400 shadow-md -translate-y-0.5 scale-[1.01]"
-                            : "border-gray-200 hover:shadow-md"
-                          }`}
+                        ? "border-indigo-400 shadow-md -translate-y-0.5 scale-[1.01]"
+                        : "border-gray-200 hover:shadow-md"
+                      }`}
                       >
                         <h4 className="text-gray-900 mb-3 text-sm sm:text-base font-medium">
                           {item.description}
