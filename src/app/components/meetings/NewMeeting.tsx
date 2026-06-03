@@ -15,6 +15,8 @@ export function NewMeeting() {
     openFilePicker,
     clearFile,
     handleSubmit,
+    context,
+    setContext,
     cancel,
   } = useNewMeeting();
 
@@ -27,7 +29,6 @@ export function NewMeeting() {
             Upload your meeting transcript to generate AI-powered insights
           </p>
         </div>
-
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 sm:p-6 mb-4 sm:mb-6">
           <label className="text-gray-900 text-sm sm:text-base font-medium mb-4 block">
             Meeting Transcript
@@ -95,6 +96,24 @@ export function NewMeeting() {
               </div>
             </div>
           )}
+        </div>
+
+        <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-4 sm:p-6 mb-4 sm:mb-6">
+          <label className="text-gray-900 text-sm sm:text-base font-medium mb-1 block">
+            Context
+            <span className="font-normal text-gray-400 ml-2">(optional)</span>
+          </label>
+          <p className="text-gray-500 text-xs sm:text-sm mb-3">
+            Tell the AI who you are and what you need — e.g. "I'm an HR manager, focus on action items and compliance concerns."
+          </p>
+          <textarea
+            name="context"
+            value={context}
+            onChange={(e) => setContext(e.target.value)}
+            placeholder="e.g. I'm a branch manager reviewing a team sync. Highlight any blockers, decisions made, and follow-up owners."
+            rows={4}
+            className="w-full px-3 py-2.5 border border-gray-200 rounded-lg text-sm text-gray-800 placeholder-gray-400 bg-gray-50 resize-y focus:outline-none focus:ring-2 focus:ring-indigo-300 focus:border-indigo-400 transition-colors"
+          />
         </div>
 
         <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-3">
