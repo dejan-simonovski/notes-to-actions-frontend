@@ -9,7 +9,7 @@ export function AppTitle() {
       />
 
       <h1 className="relative text-indigo-600 whitespace-nowrap font-semibold">
-                AI Meeting Notes
+        AI Meeting Notes
       </h1>
     </div>
   );
