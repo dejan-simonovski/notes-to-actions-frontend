@@ -208,6 +208,9 @@ const meetingsSlice = createSlice({
       };
       state.meetings.unshift(newMeeting);
     },
+    clearMeetings(state) {
+      state.meetings = [];
+    },
     updateActionItemStatus(
       state,
       action: PayloadAction<{
@@ -225,5 +228,5 @@ const meetingsSlice = createSlice({
   },
 });
 
-export const { addMeeting, updateActionItemStatus } = meetingsSlice.actions;
+export const { addMeeting, clearMeetings, updateActionItemStatus } = meetingsSlice.actions;
 export default meetingsSlice.reducer;
