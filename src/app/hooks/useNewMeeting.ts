@@ -22,6 +22,7 @@ export function useNewMeeting() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [context, setContext] = useState(''); // 👈 new
 
   const ALLOWED_EXTENSIONS = ['.txt', '.pdf', '.doc', '.docx'];
   const ALLOWED_MIME_TYPES = [
@@ -98,7 +99,7 @@ export function useNewMeeting() {
     setIsProcessing(true);
 
     try {
-      const response = await analyzeFile(selectedFile);
+      const response = await analyzeFile(selectedFile, context);
 
       if (!response.success || !response.data) {
         throw new Error(response.message ?? 'Analysis failed.');
@@ -114,7 +115,7 @@ export function useNewMeeting() {
     } finally {
       setIsProcessing(false);
     }
-  }, [selectedFile, navigate, dispatch]);
+  }, [selectedFile, context, navigate, dispatch]);
 
   const cancel = useCallback(() => {
     navigate('/app');
@@ -133,6 +134,8 @@ export function useNewMeeting() {
     openFilePicker,
     clearFile,
     handleSubmit,
+    context,
+    setContext,
     cancel,
   };
 }
