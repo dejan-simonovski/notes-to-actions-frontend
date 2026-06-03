@@ -1,4 +1,5 @@
-import { User } from "lucide-react";
+import { User, Copy, Check } from "lucide-react";
+import { useState, useCallback } from "react";
 import { useActionItems } from "../../hooks/useActionItems";
 import type { TaskStatus } from "../../types/meeting";
 
@@ -19,6 +20,57 @@ const columnDragOver: Record<TaskStatus, string> = {
   in_progress: "bg-indigo-50 border-indigo-400",
   done: "bg-green-50 border-green-400",
 };
+
+function fallbackCopy(text: string) {
+  const el = document.createElement("textarea");
+  el.value = text;
+  el.style.cssText = "position:fixed;top:-9999px;left:-9999px;opacity:0";
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand("copy");
+  document.body.removeChild(el);
+}
+
+function CopyButton({ text }: { text: string }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+
+      const write = () => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 1500);
+      };
+
+      if (navigator.clipboard?.writeText) {
+        navigator.clipboard.writeText(text).then(write).catch(() => {
+          fallbackCopy(text);
+          write();
+        });
+      } else {
+        fallbackCopy(text);
+        write();
+      }
+    },
+    [text]
+  );
+
+  return (
+    <button
+      onClick={handleCopy}
+      onMouseDown={(e) => e.stopPropagation()}
+      title="Copy title"
+      className={`flex-shrink-0 p-1 rounded transition-all duration-150
+        ${copied
+          ? "text-green-500 bg-green-50"
+          : "text-gray-400 hover:text-gray-600 hover:bg-gray-100"
+        }`}
+    >
+      {copied ? <Check size={13} /> : <Copy size={13} />}
+    </button>
+  );
+}
 
 export function ActionItemsBoard() {
   const {
@@ -102,9 +154,12 @@ export function ActionItemsBoard() {
                             : "border-gray-200 hover:shadow-md"
                           }`}
                       >
-                        <h4 className="text-gray-900 mb-3 text-sm sm:text-base font-medium">
-                          {item.description}
-                        </h4>
+                        <div className="flex items-start justify-between gap-2 mb-3">
+                          <h4 className="text-gray-900 text-sm sm:text-base font-medium leading-snug">
+                            {item.description}
+                          </h4>
+                          <CopyButton text={item.description} />
+                        </div>
 
                         <div className="space-y-1.5 text-gray-600 mb-3 text-xs sm:text-sm">
                           <div className="flex items-center gap-2">
