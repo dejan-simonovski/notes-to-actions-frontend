@@ -1,4 +1,4 @@
-import { Copy, Download, RefreshCw } from 'lucide-react';
+import { Copy, Download } from 'lucide-react';
 import { useMeetingResults } from '../../hooks/useMeetingResults';
 import { TranscriptPanel } from './components/TranscriptPanel';
 import { MeetingSummary } from './components/MeetingSummary';

@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router';
 import { toast } from 'sonner';
 import { useAppSelector } from '../store/hooks';
-import { exportMeetingToPDF } from "../../utils/exportMeetingToPdf"
+import { exportMeetingToPDF } from "../../utils/exportMeetingToPdf";
 
 export function useMeetingResults() {
   const { id } = useParams();
