@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from 'react-router';
 import { toast } from 'sonner';
 import { useAppSelector } from '../store/hooks';
+import { exportMeetingToPDF } from "../../utils/exportMeetingToPdf"
 
 export function useMeetingResults() {
   const { id } = useParams();
@@ -33,7 +34,14 @@ export function useMeetingResults() {
   };
 
   const handleExport = () => {
-    toast.success('Exported to PDF');
+    if (!meeting) return;
+    try {
+      exportMeetingToPDF(meeting);
+      toast.success('PDF downloaded');
+    } catch (err) {
+      console.error('PDF export failed:', err);
+      toast.error('Failed to export PDF');
+    }
   };
 
   const handleRegenerate = () => {
